@@ -27,10 +27,16 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 3 === 0 && num % 5 === 0) {
+    return 'FizzBuzz';
+  } if (num % 3 === 0) {
+    return 'Fizz';
+  } if (num % 5 === 0) {
+    return 'Buzz';
+  }
+  return num;
 }
-
 
 /**
  * Returns the factorial of the specified integer n.
@@ -43,8 +49,12 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  let result = 1;
+  for (let i = 1; i <= n; i += 1) {
+    result *= i;
+  }
+  return result;
 }
 
 
@@ -60,8 +70,12 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let sum = 0;
+  for (let i = n1; i <= n2; i += 1) {
+    sum += i;
+  }
+  return sum;
 }
 
 
@@ -80,8 +94,8 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return a + b > c && a + c > b && b + c > a;
 }
 
 
@@ -148,10 +162,10 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return Math.sqrt((circle.center.x - point.x) ** 2
+    + (circle.center.y - point.y) ** 2) < circle.radius;
 }
-
 
 /**
  * Returns the first non repeated char in the specified strings otherwise returns null.
@@ -164,10 +178,17 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const arr = str.replace(/\s+/g, '').split('');
+  for (let i = 0; i < arr.length; i += 1) {
+    let counter = 0;
+    for (let j = 0; j < arr.length; j += 1) {
+      if (arr[i] === arr[j]) counter += 1;
+    }
+    if (counter === 1) return arr[i];
+  }
+  return null;
 }
-
 
 /**
  * Returns the string representation of math interval,
@@ -191,8 +212,12 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const big = a >= b ? a : b;
+  const small = a < b ? a : b;
+  const start = isStartIncluded ? '[' : '(';
+  const end = isEndIncluded ? ']' : ')';
+  return `${start}${small}, ${big}${end}`;
 }
 
 
@@ -208,8 +233,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -225,8 +250,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return num.toString().split('').reverse().join('');
 }
 
 
@@ -250,9 +275,20 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  let arr = ccn.toString().split('');
+
+  arr = arr.map((item, i) => {
+    if ((arr.length % 2 === 0 && (i === 0 || i % 2 === 0))
+     || (arr.length % 2 !== 0 && (i % 2 !== 0))) {
+      return item * 2 > 9 ? item * 2 - 9 : item * 2;
+    }
+    return +item;
+  });
+
+  return arr.reduce((acc, cur) => acc + cur, 0) % 10 === 0;
 }
+
 
 /**
  * Returns the digital root of integer:
@@ -268,8 +304,9 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const sumDigits = (value) => value.toString().split('').reduce((acc, cur) => acc + +cur, 0);
+  return sumDigits(sumDigits(num));
 }
 
 
@@ -294,8 +331,22 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const stack = [];
+  const brackets = '()[]{}<>';
+
+  str.split('').forEach((item) => {
+    const index = brackets.indexOf(item);
+    if (index % 2 === 0) {
+      stack.push(index + 1);
+    } else if ((index % 2 !== 0) && (stack.pop() !== index)) {
+      stack.push(index);
+    }
+
+    return null;
+  });
+
+  return stack.length === 0;
 }
 
 
@@ -319,8 +370,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return +num.toString(n);
 }
 
 
@@ -336,8 +387,21 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const common = (s1, s2) => s1.split('').filter((letter) => s2.indexOf(letter) > -1);
+
+  const pathesCopy = [...pathes].map((item) => `${item.split('/').slice(0, -1).join('/')}/`);
+
+  let result;
+
+  for (let i = 0; i < pathesCopy.length - 1; i += 1) {
+    if (pathesCopy[0].split('')[0] !== '/' || pathesCopy[i + 1].split('')[0] !== '/') return '';
+    result = i === 0 ? common(pathesCopy[0], pathesCopy[1]) : common(result.join(''), pathesCopy[i + 1]);
+  }
+
+  if (result.length <= 5) result = Array.from(new Set(...result));
+
+  return result.join('');
 }
 
 
