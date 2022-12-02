@@ -280,7 +280,7 @@ function isCreditCardNumber(ccn) {
 
   arr = arr.map((item, i) => {
     if ((arr.length % 2 === 0 && (i === 0 || i % 2 === 0))
-     || (arr.length % 2 !== 0 && (i % 2 !== 0))) {
+      || (arr.length % 2 !== 0 && (i % 2 !== 0))) {
       return item * 2 > 9 ? item * 2 - 9 : item * 2;
     }
     return +item;
@@ -423,10 +423,24 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
-}
+function getMatrixProduct(A, B) {
+  const colsB = B[0].length;
+  const rowsA = A.length;
+  const rowsB = B.length;
+  const C = [];
 
+  for (let i = 0; i < rowsA; i += 1) {
+    C[i] = [];
+    for (let j = 0; j < colsB; j += 1) {
+      let value = 0;
+      for (let k = 0; k < rowsB; k += 1) {
+        value += A[i][k] * B[k][j];
+      }
+      C[i].push(value);
+    }
+  }
+  return C;
+}
 
 /**
  * Returns the evaluation of the specified tic-tac-toe position.
@@ -458,10 +472,32 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
-}
+function evaluateTicTacToePosition(position) {
+  const isTheSame = (arr) => [...new Set(arr)].length === 1;
+  const diag1 = [];
+  const diag2 = [];
+  let counter = 0;
 
+  for (let i = 0; i < position.length; i += 1) {
+    const column = [];
+
+    for (let j = 0; j < position[i].length; j += 1) {
+      column.push(position[j][i]);
+    }
+
+    if (isTheSame(column) && column[0]) return column[2];
+    if (isTheSame(position[i]) && position[i][0] && position[i].length === 3) return position[i][0];
+
+    diag1.push(position[counter][counter]);
+    diag2.push(position[counter][position[i].length - (counter + 1)]);
+    counter += 1;
+  }
+
+  if (isTheSame(diag1) && diag1[0]) return diag1[0];
+  if (isTheSame(diag2) && diag2[0]) return diag2[0];
+
+  return undefined;
+}
 
 module.exports = {
   getFizzBuzz,
